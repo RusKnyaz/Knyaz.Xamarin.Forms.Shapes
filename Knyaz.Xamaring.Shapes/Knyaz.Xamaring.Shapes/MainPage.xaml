@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shapes="clr-namespace:Knyaz.Xamaring.Shapes"
+             mc:Ignorable="d"
+             x:Class="Knyaz.Xamaring.Shapes.MainPage">
+
+    
+    <AbsoluteLayout>
+        <!-- battery-->
+        <shapes:Path  Data="m 26.378812,94.371152 c -1.0048,-1.354554 -0.955563,-1.396069 -0.957553,-3.947512 l -0.05871,-75.282204 c 0.164513,-2.460281 1.821719,-3.61837 4.027653,-3.656436 l 42.604934,0.02362 c 1.798547,0.03844 2.615636,1.385039 2.60723,2.670055 l -0.07088,76.820666 c -0.0025,2.752991 -0.108247,2.798194 -0.834542,3.783018 -1.167035,0.687872 -1.266217,0.696104 -3.569074,0.687872 L 30.477217,95.328494 c -2.39749,0.04712 -2.787143,-0.02592 -4.098405,-0.957342 z"/>
+        <shapes:Path  Data="M42.904,4.767c2.185,0,2.185-0.009,2.185,2.278v0.126c0,2.286,0,2.278-2.185,2.278h-7.789     c-2.187,0-2.187,0.007-2.187-2.278V7.045c0-2.262,0-2.278,2.187-2.278H42.904z" />
+        <shapes:Path  Data="m 56.104388,11.688455 c 0,-4.4492408 -0.01993,-3.9515337 4.488321,-3.9515337 h 0.251178 c 4.456425,0 4.44023,-0.3619688 4.44023,4.0872717"/>
+        <shapes:Path  Data="m 35,9.5 v2.22"/>
+        <shapes:Path  Data="M 43,9.5 v2.22"/>
+        <!-- plus -->
+        <shapes:Path Data="M60,20 v10 m-5,-5 h10"/>
+        <!-- minus -->
+        <shapes:Path Data="M35,25 h10"/>
+    </AbsoluteLayout>
+
+</ContentPage>
