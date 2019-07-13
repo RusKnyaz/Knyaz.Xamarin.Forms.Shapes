@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:shapes="clr-namespace:Knyaz.Xamaring.Shapes"
+             xmlns:shapes="clr-namespace:Knyaz.Xamarin.Forms.Shapes;assembly=Knyaz.Xamarin.Forms.Shapes"
              mc:Ignorable="d"
              x:Class="Knyaz.Xamaring.Shapes.MainPage">
 

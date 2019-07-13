@@ -63,10 +63,7 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EllipseRenderer.cs" />
-    <Compile Include="LineRenderer.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="PathRenderer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -101,6 +98,10 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Knyaz.Xamarin.Forms.Shapes.Android\Knyaz.Xamarin.Forms.Shapes.Android.csproj">
+      <Project>{9782c5ad-401c-42cc-ba31-a6ccc73f79a6}</Project>
+      <Name>Knyaz.Xamarin.Forms.Shapes.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Knyaz.Xamaring.Shapes\Knyaz.Xamaring.Shapes.csproj">
       <Project>{93F08355-3F48-4A98-AE75-6945312D6A74}</Project>
       <Name>Knyaz.Xamaring.Shapes</Name>
