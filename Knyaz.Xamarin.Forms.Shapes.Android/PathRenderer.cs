@@ -101,6 +101,4 @@ namespace Knyaz.Xamarin.Forms.Shapes.Android
             canvas.Restore();
         }
     }
-
-
 }

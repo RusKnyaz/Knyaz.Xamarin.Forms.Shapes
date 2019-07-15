@@ -9,11 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Knyaz.Xamaring.Shapes.Andro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Knyaz.Xamaring.Shapes.iOS", "Knyaz.Xamaring.Shapes\Knyaz.Xamaring.Shapes.iOS\Knyaz.Xamaring.Shapes.iOS.csproj", "{0410F180-B6EF-4D8F-BE24-B8CA844F6983}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Knyaz.Xamaring.Shapes", "Knyaz.Xamaring.Shapes\Knyaz.Xamaring.Shapes\Knyaz.Xamaring.Shapes.csproj", "{15049F56-92F1-4E9F-9FAD-9205A421BDEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Knyaz.Xamaring.Shapes", "Knyaz.Xamaring.Shapes\Knyaz.Xamaring.Shapes\Knyaz.Xamaring.Shapes.csproj", "{15049F56-92F1-4E9F-9FAD-9205A421BDEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Knyaz.Xamarin.Forms.Shapes", "Knyaz.Xamarin.Forms.Shapes\Knyaz.Xamarin.Forms.Shapes.csproj", "{CD2CBF3F-BD6F-4C8D-9B25-55419C3079E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Knyaz.Xamarin.Forms.Shapes", "Knyaz.Xamarin.Forms.Shapes\Knyaz.Xamarin.Forms.Shapes.csproj", "{CD2CBF3F-BD6F-4C8D-9B25-55419C3079E0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Knyaz.Xamarin.Forms.Shapes.Android", "Knyaz.Xamarin.Forms.Shapes.Android\Knyaz.Xamarin.Forms.Shapes.Android.csproj", "{9782C5AD-401C-42CC-BA31-A6CCC73F79A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Knyaz.Xamarin.Forms.Shapes.Tests", "Knyaz.Xamarin.Forms.Shapes.Tests\Knyaz.Xamarin.Forms.Shapes.Tests.csproj", "{910538A3-175E-4628-9823-B5BB62A3CDB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -223,6 +225,30 @@ Global
 		{9782C5AD-401C-42CC-BA31-A6CCC73F79A6}.Release|x64.Build.0 = Release|Any CPU
 		{9782C5AD-401C-42CC-BA31-A6CCC73F79A6}.Release|x86.ActiveCfg = Release|Any CPU
 		{9782C5AD-401C-42CC-BA31-A6CCC73F79A6}.Release|x86.Build.0 = Release|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Debug|ARM.Build.0 = Debug|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Debug|x64.Build.0 = Debug|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Debug|x86.Build.0 = Debug|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Release|ARM.ActiveCfg = Release|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Release|ARM.Build.0 = Release|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Release|iPhone.Build.0 = Release|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Release|x64.ActiveCfg = Release|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Release|x64.Build.0 = Release|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Release|x86.ActiveCfg = Release|Any CPU
+		{910538A3-175E-4628-9823-B5BB62A3CDB9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
