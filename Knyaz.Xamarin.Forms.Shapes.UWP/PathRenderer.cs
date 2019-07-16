@@ -22,9 +22,7 @@ namespace Knyaz.Xamaring.Shapes.UWP
 
                     uwpPath.StrokeThickness = control.StrokeThickness;
                     uwpPath.Stroke = new Windows.UI.Xaml.Media.SolidColorBrush(control.Stroke.ToWindowsColor());
-					//uwpPath.Data = new PathGeometryConverter().Convert(control.Data);
 					uwpPath.Data = Convert(control.Data);
-
 					//uwpPath.Fill = new Windows.UI.Xaml.Media.SolidColorBrush(control.Fill.ToWindowsColor());
 					SetNativeControl(uwpPath);
                 }
@@ -43,10 +41,14 @@ namespace Knyaz.Xamaring.Shapes.UWP
 				switch (cmd.Type)
 				{
 					case PathDataParser.CommandType.MoveTo:
+						if(currentFigure != null)
+							result.Figures.Add(currentFigure);
+
 						currentFigure = new PathFigure() { StartPoint = new Point(cmd.Arguments[0], cmd.Arguments[1]) };
 						break;
 					case PathDataParser.CommandType.LineTo:
-						currentFigure.AddLineSegment(new Point(cmd.Arguments[0], cmd.Arguments[1]));
+						var lineSegment = new LineSegment { Point = new Point(cmd.Arguments[0], cmd.Arguments[1]) };
+						currentFigure.Segments.Add(lineSegment);
 						break;
 					case PathDataParser.CommandType.Bezier:
 						{

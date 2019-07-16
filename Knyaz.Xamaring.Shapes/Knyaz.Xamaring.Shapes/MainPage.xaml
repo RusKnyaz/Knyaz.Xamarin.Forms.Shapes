@@ -19,6 +19,12 @@
         <shapes:Path Data="M60,20 v10 m-5,-5 h10"/>
         <!-- minus -->
         <shapes:Path Data="M35,25 h10"/>
+
+        <!--Ellipse-->
+        <shapes:Ellipse AbsoluteLayout.LayoutBounds="100,100,200,100" 
+                        Fill="Blue" 
+                        StrokeThickness="20" 
+                        Stroke="AliceBlue"/>
     </AbsoluteLayout>
 
 </ContentPage>
