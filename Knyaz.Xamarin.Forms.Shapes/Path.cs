@@ -112,190 +112,80 @@ namespace Knyaz.Xamarin.Forms.Shapes
 				data.Split(new[] {' ', ','}, System.StringSplitOptions.RemoveEmptyEntries)
 					.SelectMany(SplitIndexes)
 					.ToArray();
-			;
 
 			for (var idx = 0; idx < chops.Length; idx++)
 			{
 				var cmdKey = chops[idx];
+                CommandType cmdType;
+                int argsCount = 0;
+
 				switch (cmdKey)
 				{
 					case "M":
-						if (idx + 2 >= chops.Length)
-							yield break;
-
-						yield return new Command
-						{
-							Type = CommandType.MoveTo,
-							Arguments = new[]
-							{
-								float.Parse(chops[idx + 1], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 2], CultureInfo.InvariantCulture)
-							}
-						};
-						idx += 2;
+                        cmdType = CommandType.MoveTo;
+                        argsCount = 2;
 						break;
 					case "L":
-						if (idx + 2 >= chops.Length)
-							yield break;
-
-						yield return new Command
-						{
-							Type = CommandType.LineTo,
-							Arguments = new[]
-							{
-								float.Parse(chops[idx + 1], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 2], CultureInfo.InvariantCulture)
-							}
-						};
-						idx += 2;
+                        cmdType = CommandType.LineTo;
+                        argsCount = 2;
 						break;
 					case "H":
-						if (idx + 1 >= chops.Length)
-							yield break;
-
-						yield return new Command
-						{
-							Type = CommandType.LineHor,
-							Arguments = new[]
-							{
-								float.Parse(chops[idx + 1], CultureInfo.InvariantCulture)
-							}
-						};
-						idx++;
+                        cmdType = CommandType.LineHor;
+                        argsCount = 1;
 						break;
 					case "V":
-						if (idx + 1 >= chops.Length)
-							yield break;
-
-						yield return new Command
-						{
-							Type = CommandType.LineVer,
-							Arguments = new[]
-							{
-								float.Parse(chops[idx + 1], CultureInfo.InvariantCulture)
-							}
-						};
-						idx++;
-						break;
-					case "m":
-						if (idx + 2 >= chops.Length)
-							yield break;
-
-						yield return new Command
-						{
-							Type = CommandType.RelativeMoveTo,
-							Arguments = new[]
-							{
-								float.Parse(chops[idx + 1], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 2], CultureInfo.InvariantCulture)
-							}
-						};
-						idx += 2;
-						break;
-					case "l":
-						if (idx + 2 >= chops.Length)
-							yield break;
-
-						yield return new Command
-						{
-							Type = CommandType.RelativeLineTo,
-							Arguments = new[]
-							{
-								float.Parse(chops[idx + 1], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 2], CultureInfo.InvariantCulture)
-							}
-						};
-						idx += 2;
-						break;
-					case "h":
-						if (idx + 1 >= chops.Length)
-							yield break;
-
-						yield return new Command
-						{
-							Type = CommandType.RelativeLineHor,
-							Arguments = new[]
-							{
-								float.Parse(chops[idx + 1], CultureInfo.InvariantCulture)
-							}
-						};
-						idx++;
-						break;
+                        cmdType = CommandType.LineVer;
+                        argsCount = 1;
+                        break;
+                    case "m":
+                        cmdType = CommandType.RelativeMoveTo;
+                        argsCount = 2;
+                        break;
+                    case "l":
+                        cmdType = CommandType.RelativeLineTo;
+                        argsCount = 2;
+                        break;
+                    case "h":
+                        cmdType = CommandType.RelativeLineHor;
+                        argsCount = 1;
+                        break;
 					case "v":
-						if (idx + 1 >= chops.Length)
-							yield break;
-
-						yield return new Command
-						{
-							Type = CommandType.RelativeLineVer,
-							Arguments = new[]
-							{
-								float.Parse(chops[idx + 1], CultureInfo.InvariantCulture)
-							}
-						};
-						idx++;
-						break;
+                        cmdType = CommandType.RelativeLineVer;
+                        argsCount = 1;
+                        break;
 					case "C":
-						if (idx + 6 >= chops.Length)
-							yield break;
-
-						yield return new Command
-						{
-							Type = CommandType.Bezier,
-							Arguments = new[]
-							{
-								float.Parse(chops[idx + 1], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 2], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 3], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 4], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 5], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 6], CultureInfo.InvariantCulture)
-							}
-						};
-						idx += 6;
+                        cmdType = CommandType.Bezier;
+                        argsCount = 6;
 						break;
-					case "c":
-						if (idx + 6 >= chops.Length)
-							yield break;
-
-						yield return new Command
-						{
-							Type = CommandType.RelativeBezier,
-							Arguments = new[]
-							{
-								float.Parse(chops[idx + 1], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 2], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 3], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 4], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 5], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 6], CultureInfo.InvariantCulture)
-							}
-						};
-						idx += 6;
-						break;
-					case "Q":
-						if (idx + 4 >= chops.Length)
-							yield break;
-
-						yield return new Command
-						{
-							Type = CommandType.QBezier,
-							Arguments = new[]
-							{
-								float.Parse(chops[idx + 1], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 2], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 3], CultureInfo.InvariantCulture),
-								float.Parse(chops[idx + 4], CultureInfo.InvariantCulture)
-							}
-						};
-						idx += 4;
-						break;
+                    case "c":
+                        cmdType = CommandType.RelativeBezier;
+                        argsCount = 6;
+                        break;
+                    case "Q":
+                        cmdType = CommandType.QBezier;
+                        argsCount = 4;
+                        break;
 					case "Z":
 					case "z":
-						yield return new Command {Type = CommandType.Close};
-						break;
+                        cmdType = CommandType.Close;
+                        argsCount = 0;
+                        break;
+                    default:
+                        continue;
 				}
-			}
+
+                if (idx + argsCount >= chops.Length)
+                    continue;
+
+                var args = new float[argsCount];
+                for(var aIdx = 0;  aIdx < argsCount; aIdx ++)
+                {
+                    args[aIdx] = float.Parse(chops[idx + aIdx + 1], CultureInfo.InvariantCulture);
+                }
+
+                yield return new Command { Type = cmdType, Arguments = args};
+                idx += argsCount;
+            }
 		}
 
 		static readonly char[] Commands = {
@@ -331,6 +221,120 @@ namespace Knyaz.Xamarin.Forms.Shapes
 			}
 
 			return result.ToString().TrimEnd();
+		}
+
+		/// <summary>
+		/// Convert relative commands to absolute
+		/// </summary>
+		/// <param name="commands"></param>
+		/// <returns></returns>
+		public static IEnumerable<Command> ToAbsolute(IEnumerable<Command> commands)
+		{
+			float lastX = 0;
+			float lastY = 0;
+			foreach(var cmd in commands)
+			{
+				switch (cmd.Type)
+				{
+					case CommandType.Bezier:
+						lastX = cmd.Arguments[4];
+						lastY = cmd.Arguments[5];
+						yield return cmd;
+						break;
+					case CommandType.LineHor:
+						lastX = cmd.Arguments[0];
+						yield return cmd;
+						break;
+					case CommandType.LineTo:
+						lastX = cmd.Arguments[0];
+						lastY = cmd.Arguments[1];
+						yield return cmd;
+						break;
+					case CommandType.LineVer:
+						yield return new Command
+						{
+							Type = CommandType.LineTo,
+							Arguments = new float[]
+							{
+								lastX,
+								lastY = cmd.Arguments[0]
+							}
+						};
+						break;
+					case CommandType.MoveTo:
+						lastX = cmd.Arguments[0];
+						lastY = cmd.Arguments[1];
+						yield return cmd;
+						break;
+					case CommandType.QBezier:
+						lastX = cmd.Arguments[2];
+						lastY = cmd.Arguments[3];
+						yield return cmd;
+						break;
+					case CommandType.RelativeBezier:
+						yield return new Command
+						{
+							Type = CommandType.Bezier,
+							Arguments = new float[]
+							{
+								lastX+cmd.Arguments[0],
+								lastY+cmd.Arguments[1],
+								lastX+cmd.Arguments[2],
+								lastY+cmd.Arguments[3],
+								lastX = lastX+cmd.Arguments[4],
+								lastY = lastY+cmd.Arguments[5]
+							}
+						};
+						break;
+					case CommandType.RelativeLineHor:
+						yield return new Command
+						{
+							Type = CommandType.LineTo,
+							Arguments = new float[]
+							{
+								lastX = lastX+cmd.Arguments[0],
+								lastY
+							}
+						};
+						break;
+					case CommandType.RelativeLineTo:
+						yield return new Command
+						{
+							Type = CommandType.LineTo,
+							Arguments = new float[]
+							{
+								lastX = lastX+cmd.Arguments[0],
+								lastY = lastY+cmd.Arguments[1],
+							}
+						};
+						break;
+					case CommandType.RelativeLineVer:
+						yield return new Command
+						{
+							Type = CommandType.LineTo,
+							Arguments = new float[]
+							{
+								lastX,
+								lastY = lastY + cmd.Arguments[0]
+							}
+						};
+						break;
+					case CommandType.RelativeMoveTo:
+						yield return new Command
+						{
+							Type = CommandType.MoveTo,
+							Arguments = new float[]
+							{
+								lastX = lastX + cmd.Arguments[0],
+								lastY = lastY + cmd.Arguments[1]
+							}
+						};
+						break;
+					default:
+						yield return cmd;
+						break;
+				}
+			}
 		}
 	}
 }

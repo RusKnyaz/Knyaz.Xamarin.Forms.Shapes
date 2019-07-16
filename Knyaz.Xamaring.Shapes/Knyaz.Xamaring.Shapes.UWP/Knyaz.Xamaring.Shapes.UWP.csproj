@@ -92,9 +92,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EllipseRenderer.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PathRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -144,10 +146,14 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.0.0.425677" />
-    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.1.9"/>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.1.9" />
     <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Knyaz.Xamarin.Forms.Shapes\Knyaz.Xamarin.Forms.Shapes.csproj">
+      <Project>{cd2cbf3f-bd6f-4c8d-9b25-55419c3079e0}</Project>
+      <Name>Knyaz.Xamarin.Forms.Shapes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Knyaz.Xamaring.Shapes\Knyaz.Xamaring.Shapes.csproj">
       <Project>{93F08355-3F48-4A98-AE75-6945312D6A74}</Project>
       <Name>Knyaz.Xamaring.Shapes</Name>
