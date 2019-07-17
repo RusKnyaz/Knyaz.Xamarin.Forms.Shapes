@@ -15,15 +15,30 @@ namespace Knyaz.Xamarin.Forms.Shapes.Android
     {
         public EllipseRenderer(Context context) : base(context) => SetWillNotDraw(false);
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Ellipse> e) => Invalidate();
+		protected override void OnElementChanged(ElementChangedEventArgs<Ellipse> e)
+		{
+			if (e.OldElement is Ellipse oldEllipse)
+			{
+				oldEllipse.PropertyChanged -= Ellipse_PropertyChanged;
+			}
+			
+			if(e.NewElement is Ellipse ellipse)
+			{
+				ellipse.PropertyChanged += Ellipse_PropertyChanged;
+			}
+			Invalidate();
+		}
 
-        protected override void OnDraw(global::Android.Graphics.Canvas canvas)
+		private void Ellipse_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) =>
+			Invalidate();
+
+		protected override void OnDraw(global::Android.Graphics.Canvas canvas)
         {
             var rect = new Rect();
             GetDrawingRect(rect);
             Paint paint;
 
-            var halfThickness = Element.StrokeThickness / 2f;
+            var halfThickness = Context.DpToPixels(Element.StrokeThickness / 2f);
 
             var ellipseRect = new RectF(
                     rect.Left + halfThickness,
@@ -31,30 +46,39 @@ namespace Knyaz.Xamarin.Forms.Shapes.Android
                     rect.Right - halfThickness,
                     rect.Bottom - halfThickness);
 
-            // circleDotFill
-            if (Element.Fill.A != 0)
-            {
-                var circleDotFillPath = new Path();
-                circleDotFillPath.AddOval(ellipseRect, Path.Direction.Cw);
+			canvas.Save();
 
-                paint = new Paint(PaintFlags.AntiAlias);
-                paint.SetStyle(Paint.Style.Fill);
-                paint.Color = Element.Fill.ToAndroid();
-                canvas.DrawPath(circleDotFillPath, paint);
-            }
+			try
+			{
+				var scale = Context.DpToPixels(1);
+				// circleDotFill
+				if (Element.Fill.A != 0)
+				{
+					var circleDotFillPath = new Path();
+					circleDotFillPath.AddOval(ellipseRect, Path.Direction.Cw);
 
-            // circleDotStroke
-            Path circleDotStrokePath = new Path();
-            circleDotStrokePath.AddOval(ellipseRect, Path.Direction.Cw);
+					paint = new Paint(PaintFlags.AntiAlias);
+					paint.SetStyle(Paint.Style.Fill);
+					paint.Color = Element.Fill.ToAndroid();
+					canvas.DrawPath(circleDotFillPath, paint);
+				}
 
-            paint = new Paint(PaintFlags.AntiAlias);
-            paint.StrokeWidth = Element.StrokeThickness;
-            paint.StrokeMiter = 10f;
-            canvas.Save();
-            paint.SetStyle(Paint.Style.Stroke);
-            paint.Color = Element.Stroke.ToAndroid();
-            canvas.DrawPath(circleDotStrokePath, paint);
-            canvas.Restore();
+				// circleDotStroke
+				Path circleDotStrokePath = new Path();
+				circleDotStrokePath.AddOval(ellipseRect, Path.Direction.Cw);
+
+				paint = new Paint(PaintFlags.AntiAlias);
+				paint.StrokeWidth = Element.StrokeThickness;
+				paint.StrokeMiter = 10f;
+				paint.SetStyle(Paint.Style.Stroke);
+				paint.Color = Element.Stroke.ToAndroid();
+				canvas.DrawPath(circleDotStrokePath, paint);
+			}
+			finally
+			{
+				canvas.Restore();
+			}
+            
         }
     }
 }

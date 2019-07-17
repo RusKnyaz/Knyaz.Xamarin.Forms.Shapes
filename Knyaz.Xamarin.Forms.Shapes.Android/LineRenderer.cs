@@ -13,6 +13,7 @@ namespace Knyaz.Xamarin.Forms.Shapes.Android
     {
         public LineRenderer(Context context) : base(context) => SetWillNotDraw(false);
 
+		//todo: handle property changes
         protected override void OnElementChanged(ElementChangedEventArgs<Line> e) => Invalidate();
 
         protected override void OnDraw(Canvas canvas)

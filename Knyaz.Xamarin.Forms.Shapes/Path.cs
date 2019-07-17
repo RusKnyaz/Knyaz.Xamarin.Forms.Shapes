@@ -9,6 +9,18 @@ namespace Knyaz.Xamarin.Forms.Shapes
 {
 	public class Path : View
 	{
+		public static readonly BindableProperty FillProperty =
+				   BindableProperty.Create(nameof(Fill), typeof(Color), typeof(Ellipse), Color.Transparent);
+
+		/// <summary>
+		/// Fill color
+		/// </summary>
+		public Color Fill
+		{
+			get { return (Color)GetValue(FillProperty); }
+			set { SetValue(FillProperty, value); }
+		}
+
 		public static readonly BindableProperty StrokeProperty =
 			BindableProperty.Create(nameof(Stroke), typeof(Color), typeof(Path), Color.Black);
 
@@ -61,7 +73,9 @@ namespace Knyaz.Xamarin.Forms.Shapes
 			RelativeBezier,
 			Bezier,
 			QBezier,
-			Close
+			Close,
+			SBezier,
+			RelativeSBezier,
 		}
 
 		private static IEnumerable<string> SplitIndexes(string data)
@@ -165,6 +179,14 @@ namespace Knyaz.Xamarin.Forms.Shapes
                         cmdType = CommandType.QBezier;
                         argsCount = 4;
                         break;
+					case "S":
+						cmdType = CommandType.SBezier;
+						argsCount = 4;
+						break;
+					case "s":
+						cmdType = CommandType.RelativeSBezier;
+						argsCount = 4;
+						break;
 					case "Z":
 					case "z":
                         cmdType = CommandType.Close;
@@ -200,7 +222,9 @@ namespace Knyaz.Xamarin.Forms.Shapes
 			'c',
 			'C',
 			'Q',
-			'Z'
+			'Z',
+			'S',
+			's'
 		};
 
 		public static string ToString(IEnumerable<Command> commands)
@@ -232,23 +256,31 @@ namespace Knyaz.Xamarin.Forms.Shapes
 		{
 			float lastX = 0;
 			float lastY = 0;
+			float secondLastX = 0;
+			float secondLastY = 0;
+			bool isLastBezier = false;
 			foreach(var cmd in commands)
 			{
 				switch (cmd.Type)
 				{
 					case CommandType.Bezier:
+						secondLastX = cmd.Arguments[2];
+						secondLastY = cmd.Arguments[3];
 						lastX = cmd.Arguments[4];
 						lastY = cmd.Arguments[5];
 						yield return cmd;
+						isLastBezier = true;
 						break;
 					case CommandType.LineHor:
 						lastX = cmd.Arguments[0];
 						yield return cmd;
+						isLastBezier = false;
 						break;
 					case CommandType.LineTo:
 						lastX = cmd.Arguments[0];
 						lastY = cmd.Arguments[1];
 						yield return cmd;
+						isLastBezier = false;
 						break;
 					case CommandType.LineVer:
 						yield return new Command
@@ -260,16 +292,19 @@ namespace Knyaz.Xamarin.Forms.Shapes
 								lastY = cmd.Arguments[0]
 							}
 						};
+						isLastBezier = false;
 						break;
 					case CommandType.MoveTo:
 						lastX = cmd.Arguments[0];
 						lastY = cmd.Arguments[1];
 						yield return cmd;
+						isLastBezier = false;
 						break;
 					case CommandType.QBezier:
 						lastX = cmd.Arguments[2];
 						lastY = cmd.Arguments[3];
 						yield return cmd;
+						isLastBezier = false;
 						break;
 					case CommandType.RelativeBezier:
 						yield return new Command
@@ -279,12 +314,13 @@ namespace Knyaz.Xamarin.Forms.Shapes
 							{
 								lastX+cmd.Arguments[0],
 								lastY+cmd.Arguments[1],
-								lastX+cmd.Arguments[2],
-								lastY+cmd.Arguments[3],
+								secondLastX = lastX+cmd.Arguments[2],
+								secondLastY = lastY+cmd.Arguments[3],
 								lastX = lastX+cmd.Arguments[4],
 								lastY = lastY+cmd.Arguments[5]
 							}
 						};
+						isLastBezier = true;
 						break;
 					case CommandType.RelativeLineHor:
 						yield return new Command
@@ -296,6 +332,7 @@ namespace Knyaz.Xamarin.Forms.Shapes
 								lastY
 							}
 						};
+						isLastBezier = false;
 						break;
 					case CommandType.RelativeLineTo:
 						yield return new Command
@@ -307,6 +344,7 @@ namespace Knyaz.Xamarin.Forms.Shapes
 								lastY = lastY+cmd.Arguments[1],
 							}
 						};
+						isLastBezier = false;
 						break;
 					case CommandType.RelativeLineVer:
 						yield return new Command
@@ -318,6 +356,7 @@ namespace Knyaz.Xamarin.Forms.Shapes
 								lastY = lastY + cmd.Arguments[0]
 							}
 						};
+						isLastBezier = false;
 						break;
 					case CommandType.RelativeMoveTo:
 						yield return new Command
@@ -329,6 +368,39 @@ namespace Knyaz.Xamarin.Forms.Shapes
 								lastY = lastY + cmd.Arguments[1]
 							}
 						};
+						isLastBezier = false;
+						break;
+					case CommandType.SBezier:
+						yield return new Command
+						{
+							Type = CommandType.Bezier,
+							Arguments = new float[]
+							{
+								isLastBezier ? 2f * lastX - secondLastX : lastX,
+								isLastBezier ? 2f * lastY - secondLastY : lastY,
+								secondLastX = cmd.Arguments[0],
+								secondLastY = cmd.Arguments[1],
+								lastX = cmd.Arguments[2],
+								lastY = cmd.Arguments[3]
+							}
+						};
+						isLastBezier = true;
+						break;
+					case CommandType.RelativeSBezier:
+						yield return new Command
+						{
+							Type = CommandType.Bezier,
+							Arguments = new float[]
+							{
+								isLastBezier ? 2f * lastX - secondLastX : lastX,
+								isLastBezier ? 2f * lastY - secondLastY : lastY,
+								secondLastX = lastX + cmd.Arguments[0],
+								secondLastY = lastY + cmd.Arguments[1],
+								lastX = lastX + cmd.Arguments[2],
+								lastY = lastY + cmd.Arguments[3]
+							}
+						};
+						isLastBezier = true;
 						break;
 					default:
 						yield return cmd;

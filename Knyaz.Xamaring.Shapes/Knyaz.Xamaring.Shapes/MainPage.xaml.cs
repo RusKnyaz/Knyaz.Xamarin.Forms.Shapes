@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Knyaz.Xamaring.Shapes
@@ -17,5 +13,17 @@ namespace Knyaz.Xamaring.Shapes
         {
             InitializeComponent();
         }
-    }
+
+		private void Button_Clicked(object sender, EventArgs e)
+		{
+			_path.Fill = _rectangle.Fill = _ellipse.Fill = Color.Red;
+			_path.Stroke = _rectangle.Stroke = _ellipse.Stroke = Color.DarkRed;
+		}
+
+		private void Button_Clicked_1(object sender, EventArgs e)
+		{
+			_path.Fill = _rectangle.Fill = _ellipse.Fill = Color.Green;
+			_path.Stroke = _rectangle.Stroke = _ellipse.Stroke = Color.DarkGreen;
+		}
+	}
 }

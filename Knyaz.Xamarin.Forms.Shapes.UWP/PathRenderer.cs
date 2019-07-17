@@ -10,24 +10,51 @@ namespace Knyaz.Xamaring.Shapes.UWP
 {
     public class PathRenderer : ViewRenderer<Path, Windows.UI.Xaml.Shapes.Path>
     {
-        protected override void OnElementChanged(ElementChangedEventArgs<Path> e)
-        {
-            base.OnElementChanged(e);
-            if (Control == null)
-            {
+		protected override void OnElementChanged(ElementChangedEventArgs<Path> e)
+		{
+			if(e.OldElement is Path oldPath)
+			{
+				oldPath.PropertyChanged += Control_PropertyChanged;
+			}
 
-                if (e.NewElement is Path control)
-                {
-                    var uwpPath = new Windows.UI.Xaml.Shapes.Path();
-
-                    uwpPath.StrokeThickness = control.StrokeThickness;
-                    uwpPath.Stroke = new Windows.UI.Xaml.Media.SolidColorBrush(control.Stroke.ToWindowsColor());
-					uwpPath.Data = Convert(control.Data);
-					//uwpPath.Fill = new Windows.UI.Xaml.Media.SolidColorBrush(control.Fill.ToWindowsColor());
+			base.OnElementChanged(e);
+			if (e.NewElement is Path newPath)
+			{
+				if (Control == null)
+				{
+					var uwpPath = new Windows.UI.Xaml.Shapes.Path();
+					newPath.PropertyChanged += Control_PropertyChanged;
 					SetNativeControl(uwpPath);
-                }
-            }
-        }
+				}
+
+				Control.StrokeThickness = newPath.StrokeThickness;
+				Control.Stroke = new SolidColorBrush(newPath.Stroke.ToWindowsColor());
+				Control.Data = Convert(newPath.Data);
+				Control.Fill = new SolidColorBrush(newPath.Fill.ToWindowsColor());
+			}
+		}
+
+		private void Control_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		{
+			var path = (Path)sender;
+
+			if(e.PropertyName == nameof(Path.Fill))
+			{
+				Control.Fill = new SolidColorBrush(path.Fill.ToWindowsColor());
+			}
+			else if(e.PropertyName == nameof(Path.Stroke))
+			{
+				Control.Stroke = new SolidColorBrush(path.Stroke.ToWindowsColor());
+			}
+			else if (e.PropertyName == nameof(Path.StrokeThickness))
+			{
+				Control.StrokeThickness = path.StrokeThickness;
+			}
+			else if(e.PropertyName == nameof(Path.Data))
+			{
+				Control.Data = Convert(path.Data);
+			}
+		}
 
 		private static PathGeometry Convert(string data)
 		{
@@ -60,6 +87,11 @@ namespace Knyaz.Xamaring.Shapes.UWP
 							};
 							currentFigure.Segments.Add(bizierSegment);
 						}
+						break;
+					case PathDataParser.CommandType.Close:
+						currentFigure.IsClosed = true;
+						result.Figures.Add(currentFigure);
+						currentFigure = new PathFigure();
 						break;
 				}
 			}
