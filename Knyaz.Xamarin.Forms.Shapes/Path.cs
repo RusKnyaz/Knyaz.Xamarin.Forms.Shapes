@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace Knyaz.Xamarin.Forms.Shapes
 {
-	public class Path : View
+	public class Path : Shape
 	{
 		public static readonly BindableProperty FillProperty =
 				   BindableProperty.Create(nameof(Fill), typeof(Color), typeof(Ellipse), Color.Transparent);
@@ -21,26 +21,7 @@ namespace Knyaz.Xamarin.Forms.Shapes
 			set { SetValue(FillProperty, value); }
 		}
 
-		public static readonly BindableProperty StrokeProperty =
-			BindableProperty.Create(nameof(Stroke), typeof(Color), typeof(Path), Color.Black);
-
-		/// <summary>
-		/// Stroke color
-		/// </summary>
-		public Color Stroke
-		{
-			get => (Color) GetValue(StrokeProperty);
-			set => SetValue(StrokeProperty, value);
-		}
-
-		public static readonly BindableProperty StrokeThicknessProperty =
-			BindableProperty.Create(nameof(StrokeThickness), typeof(float), typeof(Path), 1.0f);
-
-		public float StrokeThickness
-		{
-			get => (float) GetValue(StrokeThicknessProperty);
-			set => SetValue(StrokeThicknessProperty, value);
-		}
+		
 
 		public static readonly BindableProperty DataProperty =
 			BindableProperty.Create(nameof(Data), typeof(string), typeof(Path), "");
@@ -127,11 +108,12 @@ namespace Knyaz.Xamarin.Forms.Shapes
 					.SelectMany(SplitIndexes)
 					.ToArray();
 
+			var cmdType = CommandType.MoveTo;
+			int argsCount = 0;
+
 			for (var idx = 0; idx < chops.Length; idx++)
 			{
 				var cmdKey = chops[idx];
-                CommandType cmdType;
-                int argsCount = 0;
 
 				switch (cmdKey)
 				{
@@ -193,7 +175,11 @@ namespace Knyaz.Xamarin.Forms.Shapes
                         argsCount = 0;
                         break;
                     default:
-                        continue;
+						if (cmdKey.Length == 0 || char.IsLetter(cmdKey[0]) || argsCount == 0)
+							continue;
+						//othervise the previous command is repeated for next arguments.
+						idx--;
+						break;
 				}
 
                 if (idx + argsCount >= chops.Length)
@@ -272,8 +258,15 @@ namespace Knyaz.Xamarin.Forms.Shapes
 						isLastBezier = true;
 						break;
 					case CommandType.LineHor:
-						lastX = cmd.Arguments[0];
-						yield return cmd;
+						yield return new Command
+						{
+							Type = CommandType.LineTo,
+							Arguments = new float[]
+							{
+								lastX = cmd.Arguments[0],
+								lastY
+							}
+						};
 						isLastBezier = false;
 						break;
 					case CommandType.LineTo:

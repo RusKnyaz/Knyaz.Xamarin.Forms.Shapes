@@ -30,8 +30,7 @@ namespace Knyaz.Xamarin.Forms.Shapes.Android
 
 		protected override void OnDraw(Canvas canvas)
 		{
-			var rect = new Rect();
-			GetDrawingRect(rect);
+			var trans = Element.RenderTransform ?? new IdentityTransform();
 
 			var path = new global::Android.Graphics.Path();
 
@@ -40,22 +39,41 @@ namespace Knyaz.Xamarin.Forms.Shapes.Android
 				switch (command.Type)
 				{
 					case PathDataParser.CommandType.MoveTo:
-						path.MoveTo(
-							command.Arguments[0], 
-							command.Arguments[1]);
+						{
+							var pt = trans.TransformPoint(
+								new System.Drawing.PointF(command.Arguments[0], command.Arguments[1]));
+							path.MoveTo(pt.X, pt.Y);
+						}
 						break;
 					case PathDataParser.CommandType.LineTo:
-						path.LineTo(command.Arguments[0], command.Arguments[1]);
+						{
+							var pt = trans.TransformPoint(
+									new System.Drawing.PointF(command.Arguments[0], command.Arguments[1]));
+							path.LineTo(pt.X, pt.Y);
+						}
 						break;
 					case PathDataParser.CommandType.QBezier:
-						path.QuadTo(command.Arguments[0], command.Arguments[1],
-							command.Arguments[2], command.Arguments[3]);
+						{
+							var pt = trans.TransformPoint(
+									new System.Drawing.PointF(command.Arguments[0], command.Arguments[1]));
+							var pt2 = trans.TransformPoint(
+									new System.Drawing.PointF(command.Arguments[2], command.Arguments[3]));
+
+							path.QuadTo(pt.X, pt.Y, pt2.X, pt2.Y);
+						}
+						
 						break;
 					case PathDataParser.CommandType.Bezier:
-						path.CubicTo(
-							command.Arguments[0], command.Arguments[1],
-							command.Arguments[2], command.Arguments[3],
-							command.Arguments[4], command.Arguments[5]);
+						{
+							var pt = trans.TransformPoint(
+									new System.Drawing.PointF(command.Arguments[0], command.Arguments[1]));
+							var pt2 = trans.TransformPoint(
+									new System.Drawing.PointF(command.Arguments[2], command.Arguments[3]));
+							var pt3 = trans.TransformPoint(
+									new System.Drawing.PointF(command.Arguments[4], command.Arguments[5]));
+
+							path.CubicTo(pt.X, pt.Y, pt2.X, pt2.Y, pt3.X, pt3.Y);
+						}
 						break;
 					case PathDataParser.CommandType.Close:
 						path.Close();
@@ -77,13 +95,20 @@ namespace Knyaz.Xamarin.Forms.Shapes.Android
 
 			canvas.Save();
 
+			var strokeThickness = Element.StrokeThickness;
+
+			if(Element.RenderTransform is ScaleTransform scaleTransform)
+			{
+				strokeThickness = System.Math.Min(scaleTransform.ScaleX, scaleTransform.ScaleY);
+			}
+
 			try
 			{
 				var paint = new Paint(PaintFlags.AntiAlias);
 				canvas.Scale(scale, scale);
 				if (Element.Fill.A > 0)
 				{
-					paint.StrokeWidth = Element.StrokeThickness;
+					paint.StrokeWidth = strokeThickness;
 					paint.StrokeMiter = 10f;
 
 					paint.SetStyle(Paint.Style.Fill);
@@ -91,7 +116,7 @@ namespace Knyaz.Xamarin.Forms.Shapes.Android
 					canvas.DrawPath(path, paint);
 				}
 
-				paint.StrokeWidth = Element.StrokeThickness;
+				paint.StrokeWidth = strokeThickness;
 				paint.StrokeMiter = 10f;
 				paint.SetStyle(Paint.Style.Stroke);
 				paint.Color = Element.Stroke.ToAndroid();

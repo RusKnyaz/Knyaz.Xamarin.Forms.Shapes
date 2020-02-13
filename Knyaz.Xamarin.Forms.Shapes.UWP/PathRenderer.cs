@@ -1,56 +1,34 @@
 ﻿using Knyaz.Xamarin.Forms.Shapes;
-using Knyaz.Xamaring.Shapes.UWP;
+using Knyaz.Xamarin.Forms.Shapes.UWP;
 using Windows.Foundation;
 using Windows.UI.Xaml.Media;
 using Xamarin.Forms.Platform.UWP;
 
 [assembly: ExportRenderer(typeof(Path), typeof(PathRenderer))]
 
-namespace Knyaz.Xamaring.Shapes.UWP
+namespace Knyaz.Xamarin.Forms.Shapes.UWP
 {
-    public class PathRenderer : ViewRenderer<Path, Windows.UI.Xaml.Shapes.Path>
-    {
-		protected override void OnElementChanged(ElementChangedEventArgs<Path> e)
+	public class PathRenderer : ShapeRenderer<Path, Windows.UI.Xaml.Shapes.Path>
+	{
+		protected override Windows.UI.Xaml.Shapes.Path CreateControl() => new Windows.UI.Xaml.Shapes.Path();
+
+		protected override void Init(Path newPath)
 		{
-			if(e.OldElement is Path oldPath)
-			{
-				oldPath.PropertyChanged += Control_PropertyChanged;
-			}
-
-			base.OnElementChanged(e);
-			if (e.NewElement is Path newPath)
-			{
-				if (Control == null)
-				{
-					var uwpPath = new Windows.UI.Xaml.Shapes.Path();
-					newPath.PropertyChanged += Control_PropertyChanged;
-					SetNativeControl(uwpPath);
-				}
-
-				Control.StrokeThickness = newPath.StrokeThickness;
-				Control.Stroke = new SolidColorBrush(newPath.Stroke.ToWindowsColor());
-				Control.Data = Convert(newPath.Data);
-				Control.Fill = new SolidColorBrush(newPath.Fill.ToWindowsColor());
-			}
+			Control.Data = Convert(newPath.Data);
+			Control.Fill = new SolidColorBrush(newPath.Fill.ToWindowsColor());
 		}
 
-		private void Control_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		protected override void Control_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
 		{
+			base.Control_PropertyChanged(sender, e);
+
 			var path = (Path)sender;
 
-			if(e.PropertyName == nameof(Path.Fill))
+			if (e.PropertyName == nameof(Path.Fill))
 			{
 				Control.Fill = new SolidColorBrush(path.Fill.ToWindowsColor());
 			}
-			else if(e.PropertyName == nameof(Path.Stroke))
-			{
-				Control.Stroke = new SolidColorBrush(path.Stroke.ToWindowsColor());
-			}
-			else if (e.PropertyName == nameof(Path.StrokeThickness))
-			{
-				Control.StrokeThickness = path.StrokeThickness;
-			}
-			else if(e.PropertyName == nameof(Path.Data))
+			else if (e.PropertyName == nameof(Path.Data))
 			{
 				Control.Data = Convert(path.Data);
 			}
@@ -68,7 +46,7 @@ namespace Knyaz.Xamaring.Shapes.UWP
 				switch (cmd.Type)
 				{
 					case PathDataParser.CommandType.MoveTo:
-						if(currentFigure != null)
+						if (currentFigure != null)
 							result.Figures.Add(currentFigure);
 
 						currentFigure = new PathFigure() { StartPoint = new Point(cmd.Arguments[0], cmd.Arguments[1]) };

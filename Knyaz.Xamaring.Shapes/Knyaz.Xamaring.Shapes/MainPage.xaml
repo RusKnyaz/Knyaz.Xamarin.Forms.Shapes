@@ -15,25 +15,30 @@
         <Button Clicked="Button_Clicked_1" Text="Green"/>
         </StackLayout>
 
-        <!--Ellipse-->
+        <shapes:Rectangle x:Name="_rectangle" Stroke="Yellow" StrokeThickness="10"/>
         <shapes:Ellipse 
             AbsoluteLayout.LayoutBounds="100,100,200,100" 
                         Fill="Blue" 
                         StrokeThickness="20" 
                         Stroke="AliceBlue"
-                        x:Name="_ellipse"/>
+                        x:Name="_ellipse">
+            
+        </shapes:Ellipse>
 
-        <shapes:Path
-            Data="M200,100h100v100h-100z"
+        <shapes:Path  Data="M200,100h100v100h-100z"
             x:Name="_path"/>
 
+        <shapes:Path
+            Data="M400,100h100v100h-100z"
+            Stroke="Green">
+            <shapes:Path.RenderTransform>
+                <shapes:ScaleTransform ScaleX="2" ScaleY="3" CenterX="400" CenterY="100"/>
+                <!--<shapes:TranslateTransform X="50" Y="50"/>-->
+            </shapes:Path.RenderTransform>
+        </shapes:Path>
 
-        <shapes:Rectangle
-            AbsoluteLayout.LayoutBounds="100,200,200,100" 
-                        Fill="Blue" 
-                        StrokeThickness="20" 
-                        Stroke="AliceBlue"
-                        x:Name="_rectangle"/>
+
+
 
     </AbsoluteLayout>
 

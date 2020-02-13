@@ -97,6 +97,7 @@
     <Compile Include="PathRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RectangleRenderer.cs" />
+    <Compile Include="ShapeRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Default.rd.xml" />
